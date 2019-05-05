@@ -1,0 +1,62 @@
+﻿[
+  {
+    "Name":  "CAD",
+    "Rate":  1,
+    "Symbol":  "$",
+    "ID":  0
+  },
+  {
+    "Name": "USD",
+    "Rate": 0.75,
+    "Symbol": "$",
+    "ID": 1
+  },
+  {
+    "Name": "EUR",
+    "Rate": 0.67,
+    "Symbol": "€",
+    "ID": 2
+  },
+  {
+    "Name": "GBP",
+    "Rate": 0.57,
+    "Symbol": "£",
+    "ID": 3
+  },
+  {
+    "Name": "MXN",
+    "Rate": 14.08,
+    "Symbol": "$",
+    "ID": 4
+  },
+  {
+    "Name": "JPY",
+    "Rate": 82.68,
+    "Symbol": "¥",
+    "ID": 5
+  },
+  {
+    "Name": "CNY",
+    "Rate": 5.02,
+    "Symbol": "¥",
+    "ID": 6
+  },
+  {
+    "Name": "INR",
+    "Rate": 51.48,
+    "Symbol": "₹",
+    "ID": 7
+  },
+  {
+    "Name": "BRL",
+    "Rate": 2.93,
+    "Symbol": "R$",
+    "ID": 8
+  },
+  {
+    "Name": "AUD",
+    "Rate": 1.06,
+    "Symbol": "$",
+    "ID": 9
+  }
+]
