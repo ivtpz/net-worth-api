@@ -6,5 +6,6 @@ namespace networthapi.Models
         public string Name { get; set; }
         public decimal InterestRate { get; set; }
         public decimal Value { get; set; }
+        public int Id { get; set; }
     }
 }
