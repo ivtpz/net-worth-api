@@ -36,7 +36,7 @@ namespace exchange_rates.Controllers
                     Name = toCurrency.Name,
                     Symbol = toCurrency.Name,
                     ID = toCurrency.ID,
-                    Rate = decimal.Round(toRate / fromRate, 2, MidpointRounding.AwayFromZero)
+                    Rate = toRate / fromRate
                 };
             }
             catch(System.IndexOutOfRangeException e)
