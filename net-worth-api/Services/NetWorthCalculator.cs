@@ -39,21 +39,23 @@ namespace networthapi.Services
                     new Asset
                     {
                         Name = asset.Name,
-                        Value = asset.Value * rate,
+                        Value = decimal.Round(asset.Value * rate, 2, MidpointRounding.AwayFromZero),
                         InterestRate = asset.InterestRate,
-                        Type = asset.Type
+                        Type = asset.Type,
+                        Id = asset.Id
                     }),
                 Liabilities = holdings.Liabilities.Select((liability) =>
                     new Liability
                     {
                         Name = liability.Name,
-                        Value = liability.Value * rate,
+                        Value = decimal.Round(liability.Value * rate, 2, MidpointRounding.AwayFromZero),
                         InterestRate = liability.InterestRate,
-                        MonthlyPayment = liability.MonthlyPayment * rate,
-                        Type = liability.Type
+                        MonthlyPayment = decimal.Round(liability.MonthlyPayment * rate, 2, MidpointRounding.AwayFromZero),
+                        Type = liability.Type,
+                        Id = liability.Id
                     }),
                 ResultCurrencyId = holdings.ResultCurrencyId,
-                BaseCurrencyId = holdings.BaseCurrencyId
+                BaseCurrencyId = holdings.ResultCurrencyId
             };
             return convertedHoldings;
         }
