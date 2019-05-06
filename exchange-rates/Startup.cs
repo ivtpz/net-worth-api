@@ -32,7 +32,9 @@ namespace exchange_rates
                 options.AddPolicy(AllowOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("*");
+                        builder.WithOrigins("*")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
                     });
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

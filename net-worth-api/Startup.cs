@@ -22,6 +22,8 @@ namespace net_worth_api
             Configuration = configuration;
         }
 
+        readonly string AllowOrigins = "_allowOrigins";
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -30,9 +32,17 @@ namespace net_worth_api
             services.AddHttpClient();
             services.AddTransient<INetWorthCalculator, NetWorthCalculator>();
             services.AddTransient<IExchangeRate, ExchangeRate>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("*")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                    });
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddOptions();
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +56,8 @@ namespace net_worth_api
             {
                 app.UseHsts();
             }
+
+            app.UseCors(AllowOrigins);
 
             app.UseHttpsRedirection();
             app.UseMvc();
