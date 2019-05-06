@@ -8,15 +8,18 @@
     <Folder Include="wwwroot\" />
     <Folder Include="Services\" />
     <Folder Include="Models\" />
+    <Folder Include="Services.Test\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="NUnit" Version="3.11.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Controllers\ValuesController.cs" />
     <Compile Remove="Services\EmptyInterface.cs" />
+    <Compile Remove="Services.Test\UnitTest1.cs" />
   </ItemGroup>
 </Project>
