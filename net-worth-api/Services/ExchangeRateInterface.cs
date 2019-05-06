@@ -5,6 +5,6 @@ namespace networthapi.Services
 {
     public interface IExchangeRate
     {
-        Task<decimal> GetRate(int id);
+        Task<decimal> GetRate(int from, int to);
     }
 }

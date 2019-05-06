@@ -10,26 +10,41 @@ namespace exchange_rates.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExchangeRatesController : ControllerBase
+    public class ConvertController : ControllerBase
     {
         private readonly ExchangeRateData _exchangeRateData;
 
-        public ExchangeRatesController()
+        public ConvertController()
         {
             _exchangeRateData = new ExchangeRateData();
         }
-        // GET api/exchangerates
-        [HttpGet]
-        public ActionResult<ExchangeRate[]> Get()
-        {
-            return _exchangeRateData.ExchangeRates;
-        }
 
-        // GET api/exchangerates/5
-        [HttpGet("{id}")]
-        public ActionResult<ExchangeRate> Get(int id)
+        // GET api/convert?from=1&to=2
+        [HttpGet]
+        public ActionResult<ExchangeRate> Get(
+            [FromQuery(Name = "from")] int from, 
+            [FromQuery(Name = "to")] int to)
         {
-            return _exchangeRateData.ExchangeRates[id];
+            try
+            {
+                var fromCurrency = _exchangeRateData.ExchangeRates[from];
+                var toCurrency = _exchangeRateData.ExchangeRates[to];
+                decimal fromRate = fromCurrency.Rate;
+                decimal toRate = toCurrency.Rate;
+                return new ExchangeRate
+                {
+                    Name = toCurrency.Name,
+                    Symbol = toCurrency.Name,
+                    ID = toCurrency.ID,
+                    Rate = decimal.Round(toRate / fromRate, 2, MidpointRounding.AwayFromZero)
+                };
+            }
+            catch(System.IndexOutOfRangeException e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(404);
+            }
+
         }
 
     }

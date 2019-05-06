@@ -27,7 +27,15 @@ namespace networthapi.Controllers
         [HttpPut]
         public async Task<NetWorth> Put([FromBody]Holdings holdings)
         {
-            var rate = await _exchangeRate.GetRate(holdings.ResultCurrencyId);
+            decimal rate;
+            if (holdings.BaseCurrencyId != holdings.ResultCurrencyId) 
+            {
+                rate = await _exchangeRate.GetRate(holdings.BaseCurrencyId, holdings.ResultCurrencyId);
+            }
+            else
+            {
+                rate = 1;
+            }
             return _netWorthCalculator.GetNetWorth(holdings, rate);
         }
 

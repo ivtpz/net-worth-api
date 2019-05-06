@@ -18,9 +18,9 @@ namespace networthapi.Services
             _clientFactory = clientFactory;
         }
 
-        public async Task<decimal> GetRate(int id)
+        public async Task<decimal> GetRate(int from, int to)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5005/api/exchangerates/" + id);
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5005/api/convert?from=" + from + "&to=" + to);
             request.Headers.Add("Accept", "application/json");
 
             var client = _clientFactory.CreateClient();
