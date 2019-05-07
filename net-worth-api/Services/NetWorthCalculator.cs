@@ -15,8 +15,8 @@ namespace networthapi.Services
                 ConvertedHoldings = ConvertHoldings(holdings, rate)
 
             };
-            result.LiabilitiesTotal = Sum(result.ConvertedHoldings.Liabilities);
-            result.AssetsTotal = Sum(result.ConvertedHoldings.Assets);
+            result.LiabilitiesTotal = decimal.Round(Sum(holdings.Liabilities) * rate, 2, MidpointRounding.AwayFromZero);
+            result.AssetsTotal = decimal.Round(Sum(holdings.Assets) * rate, 2, MidpointRounding.AwayFromZero);
             result.NetWorthTotal = result.AssetsTotal - result.LiabilitiesTotal;
             return result;
         }
