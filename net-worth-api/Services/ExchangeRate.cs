@@ -35,7 +35,7 @@ namespace networthapi.Services
             }
             else
             {
-                // TODO: Add in error handling
+                // Should log error here
                 return 0;
             }
         }
