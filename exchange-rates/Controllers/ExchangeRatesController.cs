@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using exchangerates.Models;
-using exchangerates.Services;
+using Microsoft.Extensions.Configuration;
+using exchange_rates.Models;
+using exchange_rates.Services;
 
 namespace exchange_rates.Controllers
 {
@@ -14,9 +12,9 @@ namespace exchange_rates.Controllers
     {
         private readonly ExchangeRateData _exchangeRateData;
 
-        public ConvertController()
+        public ConvertController(IConfiguration config)
         {
-            _exchangeRateData = new ExchangeRateData();
+            _exchangeRateData = new ExchangeRateData(config);
         }
 
         // GET api/convert?from=1&to=2
@@ -31,18 +29,19 @@ namespace exchange_rates.Controllers
                 var toCurrency = _exchangeRateData.ExchangeRates[to];
                 decimal fromRate = fromCurrency.Rate;
                 decimal toRate = toCurrency.Rate;
-                return new ExchangeRate
+                return Ok(new ExchangeRate
                 {
                     Name = toCurrency.Name,
-                    Symbol = toCurrency.Name,
+                    Symbol = toCurrency.Symbol,
                     ID = toCurrency.ID,
                     Rate = toRate / fromRate
-                };
+                });
             }
             catch(System.IndexOutOfRangeException e)
             {
+                // Should log error here
                 Console.WriteLine(e);
-                return StatusCode(404);
+                return StatusCode(400);
             }
 
         }
@@ -55,15 +54,15 @@ namespace exchange_rates.Controllers
     {
         private readonly ExchangeRateData _exchangeRateData;
 
-        public CurrenciesController()
+        public CurrenciesController(IConfiguration config)
         {
-            _exchangeRateData = new ExchangeRateData();
+            _exchangeRateData = new ExchangeRateData(config);
         }
         // GET api/currencies
         [HttpGet]
         public ActionResult<Currency[]> Get()
         {
-            return _exchangeRateData.Currencies;
+            return Ok(_exchangeRateData.Currencies);
         }
     }
 }
