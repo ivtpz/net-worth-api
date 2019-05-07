@@ -10,22 +10,20 @@ namespace networthapi.Services
     public class ExchangeRate : IExchangeRate
     {
         private readonly string _exchangeRateAPI;
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly HttpClient _httpClient;
 
-        public ExchangeRate(IConfiguration config, IHttpClientFactory clientFactory)
+        public ExchangeRate(IConfiguration config, HttpClient httpClient)
         {
-            _clientFactory = clientFactory;
-            _exchangeRateAPI = config.GetSection("AppSettings").Get<AppSettings>().ExchangeRatesAPI;
+            _httpClient = httpClient;
+            _exchangeRateAPI = config["ExchangeRatesAPI"];
         }
 
         public async Task<decimal> GetRate(int from, int to)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{_exchangeRateAPI}/api/convert?from={from}&to={to}");
             request.Headers.Add("Accept", "application/json");
-
-            var client = _clientFactory.CreateClient();
-
-            var response = await client.SendAsync(request);
+            
+            var response = await _httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
             {
