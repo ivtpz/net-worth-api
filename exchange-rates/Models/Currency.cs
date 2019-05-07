@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace exchangerates.Models
+namespace exchange_rates.Models
 {
     public class Currency
     {
