@@ -1,10 +1,28 @@
-﻿using System;
-namespace networthunittests
+﻿using NUnit.Framework;
+using exchangerates.Services;
+using exchangerates.Models;
+using Moq;
+using System.IO;
+
+namespace ExchangeRateTests
 {
-    public class EmptyClass
+    [TestFixture]
+    public class WhenGettingExchangeRate
     {
-        public EmptyClass()
+
+        private readonly ExchangeRateData _exchangeRateData;
+
+        public WhenGettingExchangeRate()
         {
+            _exchangeRateData = new ExchangeRateData();
         }
+
+        [Test]
+        public void Should_Get_ExchangeRates()
+        {
+            Assert.IsInstanceOf<ExchangeRate>(_exchangeRateData.ExchangeRates[0]);
+        }
+
     }
+
 }
