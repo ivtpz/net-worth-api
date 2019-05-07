@@ -29,7 +29,6 @@ namespace net_worth_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpClient();
             services.AddTransient<INetWorthCalculator, NetWorthCalculator>();
             services.AddTransient<IExchangeRate, ExchangeRate>();
             services.AddCors(options =>
@@ -42,6 +41,7 @@ namespace net_worth_api
                                 .AllowAnyHeader();
                     });
             });
+            services.AddHttpClient<IExchangeRate, ExchangeRate>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
