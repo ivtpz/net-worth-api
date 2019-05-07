@@ -25,7 +25,7 @@ namespace networthapi.Controllers
 
         // PUT api/networthcalculator
         [HttpPut]
-        public async Task<NetWorth> Put([FromBody]Holdings holdings)
+        public async Task<ActionResult<NetWorth>> Put([FromBody]Holdings holdings)
         {
             decimal rate;
             if (holdings.BaseCurrencyId != holdings.ResultCurrencyId) 
@@ -36,7 +36,14 @@ namespace networthapi.Controllers
             {
                 rate = 1;
             }
-            return _netWorthCalculator.GetNetWorth(holdings, rate);
+            if (rate != 0)
+            {
+                return Ok(_netWorthCalculator.GetNetWorth(holdings, rate));
+            }
+            else
+            {
+                return StatusCode(400);
+            }
         }
 
     }
