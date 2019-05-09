@@ -23,6 +23,15 @@ namespace networthapi.Controllers
             _exchangeRate = exchangeRate;
         }
 
+        // PUT api/networthcalculator/projection
+        [HttpPut]
+        [Route("projection")]
+        public ActionResult<ProjectedWorth> Put([FromBody]AssetsAndLiabilities assetsAndLiabilities)
+        {
+            // TODO: Error handling
+            return Ok(_netWorthCalculator.GetProjectedWorth(assetsAndLiabilities));
+        }
+
         // PUT api/networthcalculator
         [HttpPut]
         public async Task<ActionResult<NetWorth>> Put([FromBody]Holdings holdings)

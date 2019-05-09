@@ -21,6 +21,71 @@ namespace networthapi.Services
             return result;
         }
 
+        public ProjectedWorth GetProjectedWorth(AssetsAndLiabilities assetsAndLiabilities) 
+        {
+            Console.WriteLine(assetsAndLiabilities);
+            ProjectedWorth projection = new ProjectedWorth
+            {
+                projections = new decimal[20]
+            };
+            var EOYAssets = assetsAndLiabilities.Assets;
+            var EOYLiabilities = assetsAndLiabilities.Liabilities;
+
+            projection.projections[0] = Sum(EOYAssets) - Sum(EOYLiabilities);
+
+            for (int year = 1; year < 20; year++)
+            {
+                EOYAssets = EOYAssets.Select((asset) =>
+                    new Asset
+                    {
+                        Value = asset.Value * (1 + asset.InterestRate),
+                        InterestRate = asset.InterestRate
+                    });
+                decimal EOYAssetsTotal = Sum(EOYAssets);
+
+                decimal paymentsMade = EOYLiabilities.Aggregate(0m, (acc, liability) => acc + GetEOYValue(liability).paymentsMade);
+
+                EOYLiabilities = EOYLiabilities.Select((liability) =>
+                    new Liability
+                    {
+                        MonthlyPayment = liability.MonthlyPayment,
+                        InterestRate = liability.InterestRate,
+                        Value = GetEOYValue(liability).value
+                    }
+                );
+                decimal EOYLiabilitiesTotal = Sum(EOYLiabilities);
+
+                projection.projections[year] = decimal.Round(EOYAssetsTotal - paymentsMade - EOYLiabilitiesTotal, 2, MidpointRounding.AwayFromZero);
+            }
+
+            return projection;
+        }
+
+        public class LiabilityResult
+        {
+            public decimal value;
+            public decimal paymentsMade;
+        }
+
+        private LiabilityResult GetEOYValue(Liability liability)
+        {
+            decimal value = liability.Value;
+            decimal paymentsMade = 0;
+            for(int month = 0; month < 12; month++)
+            {
+                if (value > 0)
+                {
+                    paymentsMade += Math.Min(liability.MonthlyPayment, value);
+                    value = (value - liability.MonthlyPayment) * (1 + (liability.InterestRate / 12));
+                }
+            }
+            return new LiabilityResult
+            {
+                value = Math.Max(value, 0),
+                paymentsMade = paymentsMade
+            };
+        }
+
         private decimal Sum(IEnumerable<Resource> resources)
         {
             decimal sum = 0;
